@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/redux'
 import { useDispatch } from 'react-redux'
 import { filmsActions, getFilmsThunk, searchFilmsThunk } from '../../redux/reducer'
+import { FilmType } from '../../types/types'
 
 export const MainPage = () => {
     const films = useSelector((state: RootState) => state.films.films)
@@ -46,13 +47,13 @@ export const MainPage = () => {
         <div>
             <h1>Home</h1>
             <div className="search"><h2>Search:</h2>
-                <input type="text" value={searchValue} onChange={(e: any) => setSearchValue(e.currentTarget.value)} />
+                <input type="text" value={searchValue} onChange={(e: React.FormEvent<HTMLInputElement>) => setSearchValue(e.currentTarget.value)} />
                 <button style={{ margin: "0px 10px" }} onClick={() => clearSearch()}>clear</button>
                 <button onClick={() => searchFilms()} disabled={searchValue.length < 3}>search</button>
             </div>
             {searchedFilms.length >= 1 ? <h1>Search result: {searchedFilms.length}</h1> : null}
             <div className='movies'>
-                {searchedFilms?.map((item: any, key: number) => {
+                {searchedFilms?.map((item: FilmType, key: number) => {
                     return (
                         <Movie key={item.id + key} item={item} />
                     )
@@ -60,7 +61,7 @@ export const MainPage = () => {
             </div>
             <h1> Our Films</h1>
             <div className="movies">
-                {films?.map((item: any, key: number) => {
+                {films?.map((item: FilmType, key: number) => {
                     return (
                         <Movie key={item.id + key} item={item} />
                     )

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { ReadMore } from '../../ReadMore';
+import { FilmType } from '../../types/types';
 
-export const Movie = ({ item }: { item: any }) => {
+export const Movie = ({ item }: { item: FilmType }) => {
 
     const [favourites, setFavourites] = useState<Array<number>>([])
 
@@ -12,15 +13,15 @@ export const Movie = ({ item }: { item: any }) => {
         return toast.success("Film has been added to favourites")
     }
     const removeFromFavourites = () => {
-        let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "").filter((fav: any) => fav.id !== item.id)
+        let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "").filter((fav: FilmType) => fav.id !== item.id)
         localStorage.setItem("favouriteFilms", JSON.stringify(newFavourites))
-        setFavourites(newFavourites.map((fav: any) => fav.id))
+        setFavourites(newFavourites.map((fav: FilmType) => fav.id))
         return toast.success("Film has been removed from favourites")
     }
 
     useEffect(() => {
         let storageFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "")
-        setFavourites(storageFavourites.map((item: any) => item.id))
+        setFavourites(storageFavourites.map((item: FilmType) => item.id))
     }, [])
 
     return (
