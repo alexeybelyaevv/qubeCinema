@@ -18,7 +18,7 @@ export const MainPage = () => {
 
     const scrollHandler = (e: any) => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 200 && !isLoading) {
-            return dispatch(filmsActions.setIsLoading());
+            return dispatch(getFilmsThunk(page));
         }
     }
 
@@ -32,10 +32,8 @@ export const MainPage = () => {
     }
 
     useEffect(() => {
-        if (isLoading || page === 1) {
-            dispatch(getFilmsThunk(page))
-        }
-    }, [isLoading])
+        dispatch(getFilmsThunk(page))
+    }, [])
 
     useEffect(() => {
         document.addEventListener("scroll", scrollHandler)

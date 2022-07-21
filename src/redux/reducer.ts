@@ -44,7 +44,7 @@ const reducer = (
         case "SET_PAGE": {
             return {
                 ...state,
-                page: state.page + 1
+                page: action.payload
             }
         }
         default:
@@ -75,10 +75,12 @@ export const filmsActions = {
             type: "CLEAR_SEARCHED"
         }
     },
-    setPage: (
+    setPage: (page: number
     ) => {
+        debugger
         return {
             type: "SET_PAGE",
+            payload: page
         };
     },
     setSearchedFilms: (
@@ -93,9 +95,9 @@ export const filmsActions = {
 
 export const getFilmsThunk = (page: number): any => async (dispatch: DispatchType) => {
     dispatch(filmsActions.setIsLoading())
+    dispatch(filmsActions.setPage(page + 1))
     const films = await getFilms(page)
     dispatch(filmsActions.setFilms(films))
-    dispatch(filmsActions.setPage())
     dispatch(filmsActions.setIsntLoading())
 }
 
@@ -103,7 +105,6 @@ export const searchFilmsThunk = (text: string): any => async (dispatch: Dispatch
     dispatch(filmsActions.setIsLoading())
     const films = await searchFilms(text)
     dispatch(filmsActions.setSearchedFilms(films))
-    dispatch(filmsActions.setPage())
     dispatch(filmsActions.setIsntLoading())
 }
 
