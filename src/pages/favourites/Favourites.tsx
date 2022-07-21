@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { Movie } from '../mainPage/Movie'
 import { FilmType } from '../../types/types'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/redux'
 
 export const Favourites = () => {
-    const [films, setFilms] = useState<Array<FilmType>>([])
+    // const [films, setFilms] = useState<Array<FilmType>>([])
 
-    useEffect(() => {
-        setFilms(JSON.parse(localStorage.getItem("favouriteFilms") ?? ""))
-    }, [])
+    // useEffect(() => {
+    //     setFilms(JSON.parse(localStorage.getItem("favouriteFilms") ?? ""))
+    // }, [])
+
+    const films = useSelector((state: RootState) => state.films.favorites)
 
     return (
         <div>

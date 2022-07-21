@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ReadMore } from '../../ReadMore';
+import { filmsActions } from '../../redux/reducer';
+import { RootState } from '../../redux/redux';
 import { FilmType } from '../../types/types';
 
 export const Movie = ({ item }: { item: FilmType }) => {
 
-    const [favourites, setFavourites] = useState<Array<number>>([])
+    // const [favourites, setFavourites] = useState<Array<number>>([])
+    const dispatch = useDispatch()
+
+    const favStorage = useSelector((state: RootState) => state.films.favorites)
 
     const addToFavourites = () => {
-        setFavourites([...favourites, item.id])
-        localStorage.setItem("favouriteFilms", JSON.stringify([...JSON.parse(localStorage.getItem("favouriteFilms") ?? ""), item]))
+        // setFavourites([...favourites, item.id])
+        dispatch(filmsActions.setFavorites([...favStorage, item]))
+        console.log([...favStorage, item]);
+
+        // localStorage.setItem("favouriteFilms", JSON.stringify([...JSON.parse(localStorage.getItem("favouriteFilms") ?? ""), item]))
         return toast.success("Film has been added to favourites")
     }
     const removeFromFavourites = () => {
-        let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "{}").filter((fav: FilmType) => fav.id !== item.id)
-        localStorage.setItem("favouriteFilms", JSON.stringify(newFavourites))
-        setFavourites(newFavourites.map((fav: FilmType) => fav.id))
+        // let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "{}").filter((fav: FilmType) => fav.id !== item.id)
+        // localStorage.setItem("favouriteFilms", JSON.stringify(newFavourites))
+        // setFavourites(favStorage.map((fav: FilmType) => fav.id))
+        dispatch(filmsActions.setFavorites([...favStorage.filter((fav: FilmType) => fav.id !== item.id)]))
         return toast.success("Film has been removed from favourites")
     }
 
-    useEffect(() => {
-        let storageFavourites = localStorage.getItem("favouriteFilms") !== null ? JSON.parse(localStorage.getItem("favouriteFilms") ?? "") : []
-        setFavourites(storageFavourites?.map((item: FilmType) => item.id))
-    }, [])
+    // useEffect(() => {
+    // let storageFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "")
+    //     setFavourites(storageFavourites?.map((item: FilmType) => item.id))
+    // }, [])
 
     return (
         <div className='movie'>
@@ -38,7 +49,7 @@ export const Movie = ({ item }: { item: FilmType }) => {
                     </ul>
                 </div>
                 <ReadMore text={item.summary} />
-                {favourites?.find((id) => id === item.id)
+                {favStorage.find((val) => val.id === item.id)
                     ? (<button onClick={() => removeFromFavourites()}>Remove from favourites</button>)
                     : (<button onClick={() => addToFavourites()}>Add to favourites</button>)
                 }

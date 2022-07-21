@@ -2,12 +2,14 @@ import { getFilms, searchFilms } from './../api/api';
 import { ThunkAction } from "redux-thunk";
 import { InferActionsTypes, RootState } from "./redux";
 import { Dispatch } from 'redux';
+import { FilmType } from '../types/types';
 
 const initialState = {
-    films: [] as Array<any>,
-    searchedFilms: [] as Array<any>,
+    films: [] as Array<FilmType>,
+    searchedFilms: [] as Array<FilmType>,
     isLoading: false,
-    page: 1 as number
+    page: 1 as number,
+    favorites: [] as Array<FilmType>
 };
 
 const reducer = (
@@ -29,6 +31,12 @@ const reducer = (
             return {
                 ...state,
                 films: [...state.films, ...action.payload]
+            }
+
+        case "SET_FAVORITES":
+            return {
+                ...state,
+                favorites: action.payload
             }
         case "SET_SEARCHED_FILMS":
             return {
@@ -60,6 +68,12 @@ export const filmsActions = {
     setIsntLoading: () => {
         return {
             type: "SET_ISNT_LOADING",
+        }
+    },
+    setFavorites: (favorites: Array<FilmType>) => {
+        return {
+            type: "SET_FAVORITES",
+            payload: favorites
         }
     },
     setFilms: (
