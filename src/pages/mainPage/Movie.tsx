@@ -21,7 +21,7 @@ export const Movie = ({ item }: { item: FilmType }) => {
 
     useEffect(() => {
         let storageFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "")
-        setFavourites(storageFavourites.map((item: FilmType) => item.id))
+        setFavourites(storageFavourites?.map((item: FilmType) => item.id))
     }, [])
 
     return (
@@ -38,7 +38,7 @@ export const Movie = ({ item }: { item: FilmType }) => {
                     </ul>
                 </div>
                 <ReadMore text={item.summary} />
-                {favourites.find((id) => id === item.id)
+                {favourites?.find((id) => id === item.id)
                     ? (<button onClick={() => removeFromFavourites()}>Remove from favourites</button>)
                     : (<button onClick={() => addToFavourites()}>Add to favourites</button>)
                 }
