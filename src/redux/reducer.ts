@@ -17,15 +17,10 @@ const reducer = (
     action: { type: string, payload: any }
 ): InitialStateType => {
     switch (action.type) {
-        case "SET_IS_LOADING":
+        case "SET_LOADING":
             return {
                 ...state,
-                isLoading: true
-            }
-        case "SET_ISNT_LOADING":
-            return {
-                ...state,
-                isLoading: false
+                isLoading: action.payload
             }
         case "SET_FILMS":
             return {
@@ -60,16 +55,13 @@ const reducer = (
     }
 };
 export const filmsActions = {
-    setIsLoading: () => {
+    setLoading: (isLoading: boolean) => {
         return {
-            type: "SET_IS_LOADING",
+            type: "SET_LOADING",
+            payload: isLoading
         }
     },
-    setIsntLoading: () => {
-        return {
-            type: "SET_ISNT_LOADING",
-        }
-    },
+
     setFavorites: (favorites: Array<FilmType>) => {
         return {
             type: "SET_FAVORITES",
@@ -108,18 +100,18 @@ export const filmsActions = {
 };
 
 export const getFilmsThunk = (page: number): any => async (dispatch: DispatchType) => {
-    dispatch(filmsActions.setIsLoading())
+    dispatch(filmsActions.setLoading(true))
     dispatch(filmsActions.setPage(page + 1))
     const films = await getFilms(page)
     dispatch(filmsActions.setFilms(films))
-    dispatch(filmsActions.setIsntLoading())
+    dispatch(filmsActions.setLoading(false))
 }
 
 export const searchFilmsThunk = (text: string): any => async (dispatch: DispatchType) => {
-    dispatch(filmsActions.setIsLoading())
+    dispatch(filmsActions.setLoading(true))
     const films = await searchFilms(text)
     dispatch(filmsActions.setSearchedFilms(films))
-    dispatch(filmsActions.setIsntLoading())
+    dispatch(filmsActions.setLoading(false))
 }
 
 
