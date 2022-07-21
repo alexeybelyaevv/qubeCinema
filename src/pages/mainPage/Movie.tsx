@@ -13,14 +13,14 @@ export const Movie = ({ item }: { item: FilmType }) => {
         return toast.success("Film has been added to favourites")
     }
     const removeFromFavourites = () => {
-        let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "").filter((fav: FilmType) => fav.id !== item.id)
+        let newFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "{}").filter((fav: FilmType) => fav.id !== item.id)
         localStorage.setItem("favouriteFilms", JSON.stringify(newFavourites))
         setFavourites(newFavourites.map((fav: FilmType) => fav.id))
         return toast.success("Film has been removed from favourites")
     }
 
     useEffect(() => {
-        let storageFavourites = JSON.parse(localStorage.getItem("favouriteFilms") ?? "")
+        let storageFavourites = localStorage.getItem("favouriteFilms") !== null ? JSON.parse(localStorage.getItem("favouriteFilms") ?? "") : []
         setFavourites(storageFavourites?.map((item: FilmType) => item.id))
     }, [])
 
